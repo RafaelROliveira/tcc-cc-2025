@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Controle Parental</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Gloria+Hallelujah&family=Lexend:wght@100..900&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="popup.css" />
+</head>
+
+<body>
+  <div class="popup-card">
+    <div class="pop-head">
+      <div class="pop-title">
+        <p>
+          Controle Parental
+        </p>
+      </div>
+
+      <div class="head-right">
+        <span id="state-text" class="state-text off">Desabilitado</span>
+        <label class="switch switch-compact" aria-label="Ativar/desativar">
+          <input id="toggle-enabled" type="checkbox" />
+          <span class="track" aria-hidden="true"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="off-hint">
+      Ative para escolher o modo e gerenciar a lista do site atual.
+    </div>
+
+    <div class="gated">
+      <div class="field">
+        <span class="label">Modo de filtragem:</span>
+        <select id="mode" aria-describedby="mode-help">
+          <option value="blocklist">Bloquear lista (padrão)</option>
+          <option value="allowlist">Permitir lista</option>
+        </select>
+        <div id="mode-help" class="help"></div>
+      </div>
+
+      <button id="add-current" class="btn btn-primary">
+        Adicionar site atual à lista
+      </button>
+    </div>
+
+    <div class="actions-row">
+      <a href="#" id="open-options" class="btn btn-secondary w-full">Abrir página de Configurações</a>
+    </div>
+
+  </div>
+
+
+
+  <script src="popup.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "Extensão de navegador para controle parental",
+  "version": "1.3.0",
+  "description": "Bloqueio por domínio, Modo Estudo, proteção para Google (Imagens e Vídeos) e opções de conteúdo. Privacidade e histórico local.",
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Controle Parental",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "permissions": [
+    "storage",
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback",
+    "webNavigation",
+    "webRequest",
+    "tabs",
+    "alarms"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "http://*/*",
+    "https://*/*"
+  ],
+
+  
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "block.html",
+        "block.css",
+        "block.js",
+        "assets/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  }
+}

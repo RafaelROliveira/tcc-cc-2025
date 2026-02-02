@@ -1,0 +1,529 @@
+/* ===== Resetzinho leve ===== */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+        Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Tema (claro/escuro automático) ===== */
+:root {
+    --bg: #ffffff;
+    --panel: #f0f0f0;
+    --text: #051638;
+    --muted: #6b7280;
+    --primary: #2563eb;
+    --primary-contrast: #ffffff;
+    --ring: #93c5fd;
+    --ok: #16a34a;
+    --warn: #f59e0b;
+    --bad: #ef4444;
+
+    --hist-allow-bg: rgba(14, 95, 44, 0.219);
+    --hist-allow-border: #15803d;
+
+    --hist-block-bg: rgba(95, 43, 43, 0.247);
+    --hist-block-border: #b91c1c;
+
+    --hist-susp-bg: rgba(177, 143, 64, 0.247);
+    --hist-susp-border: #cca054;
+
+    --hairline: #b3b4b8;
+    --shadow: 0 1px 5px rgba(0, 0, 0, .45);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #1d1d1d;
+        /* fundo da página */
+        --panel: #242424;
+        /* cartões */
+        --text: #e5e7eb;
+        /* texto principal */
+        --muted: #9ca3af;
+        /* texto secundário */
+        --primary: #60a5fa;
+        --primary-contrast: #1d1d1d;
+        --ring: #3b82f6;
+        --ok: #22c55e;
+        --warn: #fbbf24;
+        --bad: #ca4c4c;
+
+        --hist-allow-bg: rgba(22, 163, 74, .06);
+        --hist-allow-border: #15803d;
+
+        --hist-block-bg: rgba(248, 113, 113, .08);
+        --hist-block-border: #b91c1c;
+
+        --hist-susp-bg: rgba(251, 191, 36, .10);
+        --hist-susp-border: #955f00;
+
+        --hairline: #32363a;
+        --shadow: 0 1px 5px rgba(0, 0, 0, .45);
+    }
+}
+
+html,
+body {
+    color-scheme: light dark;
+}
+
+/* ===== Layout do popup ===== */
+body {
+    background: var(--bg);
+    color: var(--text);
+    min-width: 400px;
+    max-width: 360px;
+    padding: 10px;
+}
+
+.popup-card {
+    background: linear-gradient(180deg, var(--panel), transparent 60%);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    padding: 14px;
+}
+
+/* ===== Cabeçalho ===== */
+.pop-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.pop-title {
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: .2px;
+    font-family: "Lexend";
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    border: 2px solid var(--hairline);
+    background: var(--bad);
+    font-family: "Lexend";
+}
+
+.is-on .status-dot {
+    background: var(--ok);
+}
+
+/* ===== Campos ===== */
+.field {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin: 10px 0;
+}
+
+
+label,
+.label {
+    font-size: 0.8rem;
+    color: var(--text);
+    font-family: "Lexend";
+    font-weight: 500;
+}
+
+/* filete */
+.hr {
+    height: 1px;
+    background: var(--hairline);
+    margin: 12px 0;
+    border: 0;
+}
+
+.inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+select {
+    width: 100%;
+    border: 1px solid var(--hairline);
+    background: var(--panel);
+    color: var(--text);
+    font-family: "Lexend";
+    border-radius: 12px;
+    padding: 8px 10px;
+    outline: none;
+    font-weight: 500;
+}
+
+select:focus {
+    box-shadow: 0 0 0 3px var(--ring);
+    border-color: transparent;
+    font-family: "Lexend";
+}
+
+.btn {
+    border: 0;
+    border-radius: 12px;
+    padding: 9px 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .04s ease, filter .15s ease;
+    font-family: "Lexend";
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: var(--primary-contrast);
+    width: 100%;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    filter: brightness(1.05);
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 0 3px var(--ring);
+    outline: none;
+}
+
+/* links */
+a {
+    color: var(--primary);
+    text-decoration: none;
+    font-family: "Lexend";
+    font-weight: 500;
+}
+
+a:hover {
+    text-decoration: underline;
+    font-family: "Lexend";
+}
+
+.footer {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: "Lexend";
+}
+
+/* micro aviso desabilitado */
+.muted-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: rgba(239, 68, 68, .12);
+    color: var(--bad);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: .3px;
+}
+
+/* Gating por estado*/
+:root[data-on="false"] .gated {
+    display: none;
+}
+
+:root[data-on="true"] .off-hint {
+    display: none;
+}
+
+.off-hint {
+    font-weight: 400;
+    margin: 6px 2px 2px;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* sempre visível */
+.footer {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.footer a {
+    font-weight: 600;
+}
+
+
+/* switch base  */
+.switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.switch input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch .track {
+    width: 46px;
+    height: 26px;
+    border-radius: 999px;
+    background: #c7cad1;
+    position: relative;
+    transition: background .18s ease;
+}
+
+.switch .track::after {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform .18s ease, background .18s ease;
+}
+
+.switch input:checked+.track {
+    background: var(--primary);
+}
+
+.switch input:checked+.track::after {
+    transform: translateX(20px);
+}
+
+.switch input:focus-visible+.track {
+    outline: 3px solid var(--ring);
+    outline-offset: 2px;
+}
+
+/* gating por estado  */
+:root[data-on="false"] .gated {
+    display: none;
+}
+
+:root[data-on="true"] .off-hint {
+    display: none;
+}
+
+.off-hint {
+    margin: 6px 2px 2px;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* Cabeçalho com switch + texto de estado */
+.pop-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.head-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.state-text {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .2px;
+    padding: 2px 6px;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    font-family: "Lexend";
+}
+
+.state-text.on {
+    background: rgba(22, 163, 74, .12);
+    color: #15803d;
+    font-family: "Lexend";
+}
+
+.state-text.off {
+    background: rgba(248, 113, 113, .15);
+    color: #b91c1c;
+    font-family: "Lexend";
+}
+
+/* Gating por estado  */
+:root[data-on="false"] .gated {
+    display: none;
+}
+
+:root[data-on="true"] .off-hint {
+    display: none;
+}
+
+
+.off-hint {
+    margin: 6px 2px 2px;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: "Lexend";
+}
+
+.help {
+    margin-top: 0px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    font-family: "Lexend";
+    color: var(--muted);
+    line-height: 1.35;
+}
+
+/* cartões/seções */
+.panel {
+    background: linear-gradient(180deg, var(--panel), transparent 60%);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 10px;
+}
+
+.panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.panel-title {
+    font-weight: 700;
+}
+
+.micro-hint {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* banner quando OFF */
+.banner {
+    border: 1px solid rgba(197, 34, 31, .25);
+    background: #fde7e9;
+    color: #c5221f;
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-top: 8px;
+    font-size: 13px;
+}
+
+/* controle segmentado */
+.segmented {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin: 4px 0 6px;
+}
+
+.segmented button {
+    border: 1px solid var(--hairline);
+    background: rgba(255, 255, 255, .6);
+    color: var(--text);
+    padding: 8px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.segmented button .sub {
+    display: block;
+    font-weight: 500;
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.segmented button[aria-selected="true"] {
+    background: var(--primary);
+    color: var(--primary-contrast);
+    border-color: transparent;
+}
+
+.segmented button[aria-selected="true"] .sub {
+    color: var(--primary-contrast);
+    opacity: .8;
+}
+
+/* ajuda/explicação */
+.help {
+    margin: 4px 2px 8px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.35;
+}
+
+/* botões secundários e utilidades */
+.btn-secondary {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--hairline);
+    margin-top: 10px;
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+.actions-row {
+    display: flex;
+    gap: 8px;
+}
+
+.w-full {
+    width: 100%;
+}
+
+/* acessibilidade: escondido mas no DOM */
+.visually-hidden {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* gating por estado */
+:root[data-on="false"] .gated {
+    display: none;
+}
+
+:root[data-on="true"] .banner {
+    display: none;
+}
+
+/* -------- Modal ---------- */
+
+.modal-input {
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  outline: none;
+  background: var(--panel);
+  color: inherit;
+  font-size: 14px;
+  font-family: 'Lexend';
+  transition: all 0.2s ease;
+}
+
+.modal-input:focus {
+  box-shadow: 0 0 0 3px var(--ring);
+}

@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Opções – Controle Parental</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Gloria+Hallelujah&family=Lexend:wght@100..900&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="options.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>Controle Parental – Configurações</h1>
+
+    <section id="auth-section">
+      <div id="set-pass" class="card hidden card-status centered compact">
+        <h2>Definir senha</h2>
+        <p class="muted">Defina sua senha para usar sempre que desejar alterar as configurações.</p>
+        <div class="row">
+          <input id="new-pass" type="password" placeholder="Senha" />
+          <input id="new-pass2" type="password" placeholder="Confirmar senha" />
+          <button id="btn-set-pass">Salvar Senha</button>
+        </div>
+      </div>
+
+      <div id="login-pass" class="card hidden card-status centered compact">
+        <h2>Entrar</h2>
+        <div class="row">
+          <input id="login-input" type="password" placeholder="Senha" />
+          <button id="btn-login">Entrar</button>
+        </div>
+        <p class="muted">Necessária para alterar configurações.</p>
+      </div>
+    </section>
+
+    <section id="main" class="hidden">
+      <div class="card card-status centered compact" id="status-card">
+        <div class="title-row">
+          <div class="muted" id="status-hint">
+            Desabilite/habilite a proteção.
+          </div>
+          <div class="title-actions">
+            <span id="status-pill" class="pill">Desabilitado</span>
+            <label class="switch" aria-label="Ativar extensão">
+              <input id="enabled" type="checkbox" />
+              <span class="slider" aria-hidden="true"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">Modo de filtragem:</div>
+          <select id="mode" aria-describedby="mode-help">
+            <option value="blocklist">Bloquear lista (padrão)</option>
+            <option value="allowlist">Permitir lista</option>
+          </select>
+        </div>
+
+        <p class="muted" id="mode-help"></p>
+      </div>
+
+
+
+      <div class="grid">
+        <!-- BLOQUEADOS -->
+        <div class="card card-list" id="card-block">
+          <h2>
+            Lista de Bloqueados
+            <span class="mode-badge" id="badge-block" title="Este conjunto é usado no modo Bloquear lista">Em uso</span>
+          </h2>
+          <p class="muted">Sites bloqueados (usado no modo <strong>Bloquear lista)</strong>.</p>
+          <div class="row">
+            <input id="block-input" placeholder="ex: youtube.com" />
+            <button id="block-add">Adicionar</button>
+          </div>
+          <ul id="block-list"></ul>
+        </div>
+
+        <!-- PERMITIDOS -->
+        <div class="card card-list" id="card-allow">
+          <h2>
+            Lista de Permitidos
+            <span class="mode-badge" id="badge-allow" title="Este conjunto é usado no modo Permitir lista">Em uso</span>
+          </h2>
+          <p class="muted">Sites permitidos (usado no modo <strong>Permitir lista)</strong>.</p>
+          <div class="row">
+            <input id="allow-input" placeholder="ex: escola.gov.br" />
+            <button id="allow-add">Adicionar</button>
+          </div>
+          <ul id="allow-list"></ul>
+        </div>
+      </div>
+
+
+      <div class="grid">
+        <!-- CATEGORIAS -->
+        <div id="card-categories" class="card card-dimmable">
+          <h2 class="collapsible">
+            <button class="collapse-toggle" type="button" aria-expanded="true" aria-controls="sec-categories">
+              <span>Categorias</span>
+              <span id="badge-categories" class="mode-badge hidden">Em uso</span>
+              <span class="chev" aria-hidden="true"></span>
+            </button>
+          </h2>
+
+
+          <p class="muted">Ative categorias para incluir listas prontas de domínios na sua <strong>lista de
+              bloqueados.</strong></p>
+          <div id="sec-categories" class="collapse-body" hidden>
+            <div id="categories"></div>
+          </div>
+        </div>
+
+        <!-- PROTEÇÕES DE BUSCA -->
+        <div id="card-search" class="card card-dimmable">
+          <h2 class="collapsible">
+            <button class="collapse-toggle" type="button" aria-expanded="true" aria-controls="sec-search">
+              <span class="title">Proteções de busca (Google)</span>
+              <span id="badge-search" class="mode-badge hidden">Em uso</span>
+              <span class="chev" aria-hidden="true"></span>
+            </button>
+          </h2>
+          <p class="muted">Essas proteções valem para qualquer pesquisa no Google.</p>
+          <div id="sec-search" class="collapse-body" data-open="true">
+            <div class="collapse-inner">
+
+
+              <label class="ck">
+                <input id="sh-images" type="checkbox">
+                <span class="ck-box" aria-hidden="true"></span>
+                <span class="ck-label">Bloquear Imagens (Google Imagens)</span>
+              </label>
+
+              <label class="ck">
+                <input id="sh-videos" type="checkbox">
+                <span class="ck-box" aria-hidden="true"></span>
+                <span class="ck-label">Bloquear Vídeos (Google Vídeos e Vídeos curtos)</span>
+              </label>
+
+              <label class="ck">
+                <input id="sh-safesearch" type="checkbox">
+                <span class="ck-box" aria-hidden="true"></span>
+                <span class="ck-label">Forçar SafeSearch</span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MODO ESTUDO -->
+      <div id="card-study" class="card card-dimmable dimmable" data-master="#sch-enabled">
+        <h2 class="collapsible">
+          <button class="collapse-toggle" type="button" aria-expanded="false" aria-controls="sec-study">
+            <span>Modo Estudo</span>
+            <span id="badge-study" class="mode-badge hidden">Em uso</span>
+            <span class="chev" aria-hidden="true"></span>
+          </button>
+        </h2>
+
+        <p class="muted">
+          Durante o horário programado, <strong>tudo é bloqueado</strong>, exceto os sites que você colocar em
+          <strong>permitidos durante o estudo</strong>.
+        </p>
+
+        <div id="sec-study" class="collapse-body" hidden>
+          <div class="collapse-inner">
+
+            <!-- Master on/off no mesmo padrão das categorias -->
+
+            <label class="ck">
+              <input id="sch-enabled" type="checkbox" />
+              <span class="ck-box" aria-hidden="true"></span>
+              <span class="ck-label">Ativar Modo Estudo</span>
+            </label>
+
+            <!-- horários -->
+            <div class="row" style="gap:12px;">
+              <label class="label" for="sch-start">Início</label>
+              <input id="sch-start" type="time" value="18:00" />
+              <label class="label" for="sch-end" style="margin-left:8px;">Fim</label>
+              <input id="sch-end" type="time" value="20:00" />
+            </div>
+            <div class="list-study">
+
+              <!-- dias da semana no estilo “ck” compacto -->
+              <div class="wk-grid">
+                <label class="ck wk"><input class="sch-day" type="checkbox" value="0" /><span
+                    class="ck-box"></span><span class="ck-label">Dom</span></label>
+                <label class="ck wk"><input class="sch-day" type="checkbox" value="1" /><span
+                    class="ck-box"></span><span class="ck-label">Seg</span></label>
+                <label class="ck wk"><input class="sch-day" type="checkbox" value="2" /><span
+                    class="ck-box"></span><span class="ck-label">Ter</span></label>
+                <label class="ck wk"><input class="sch-day" type="checkbox" value="3" /><span
+                    class="ck-box"></span><span class="ck-label">Qua</span></label>
+                <label class="ck wk"><input class="sch-day" type="checkbox" value="4" /><span
+                    class="ck-box"></span><span class="ck-label">Qui</span></label>
+                <label class="ck wk"><input class="sch-day" type="checkbox" value="5" /><span
+                    class="ck-box"></span><span class="ck-label">Sex</span></label>
+                <label class="ck wk"><input class="sch-day" type="checkbox" value="6" /><span
+                    class="ck-box"></span><span class="ck-label">Sáb</span></label>
+              </div>
+
+              <h3>Sites permitidos durante o estudo:</h3>
+              <div class="row">
+                <input id="sch-allow-input" placeholder="ex: escola.gov.br, unesc.net" />
+                <button id="sch-allow-add">Adicionar</button>
+              </div>
+              <ul id="sch-allow-list"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card space-end">
+        <h2>Histórico local</h2>
+        <div class="row" style="gap: 8px; align-items: center;">
+          <input id="hist-search" type="text" placeholder="Pesquisar..."
+            style="flex: 1; border: 1px solid var(--hairline); background: var(--bg2); color: var(--fg);">
+          <select id="hist-filter"
+            style="border: 1px solid var(--hairline); background: var(--panel); color: var(--fg);">
+            <option value="all">Todos</option>
+            <option value="allowed">Permitido</option>
+            <option value="blocked">Bloqueado</option>
+            <option value="suspicious">Suspeito</option>
+          </select>
+          <button class="btn-remover" id="clear-history">Limpar histórico</button>
+        </div>
+
+        <div id="history-container">
+          <table id="hist-table">
+            <thead>
+              <tr>
+                <th>Quando</th>
+                <th>Tipo</th>
+                <th>URL</th>
+              </tr>
+            </thead>
+            <tbody id="history-body"></tbody>
+          </table>
+          <div id="loading" class="muted" style="text-align:center; display:none;">Carregando...</div>
+        </div>
+
+      </div>
+
+      <!-- MODAL categoria -->
+      <div id="cat-viewer" class="modal hidden">
+        <div class="modal-card">
+          <div class="modal-head">
+            <h3 id="catv-title">Categoria</h3>
+            <button id="catv-close" class="icon-btn" aria-label="Fechar">✕</button>
+          </div>
+          <p class="muted" style="font-size:13px; margin-bottom:4px; margin-left: 14px;">
+            Clique em <strong>Bloqueado</strong> para permitir um domínio. Você também pode usar o campo abaixo para
+            pesquisar.
+          </p>
+
+
+          <div class="modal-tools">
+            <input id="catv-filter" placeholder="Filtrar domínio..." />
+            <span id="catv-counter" class="muted"></span>
+          </div>
+
+          <div id="catv-list" class="modal-body"></div>
+        </div>
+      </div>
+
+
+      <script src="options.js"></script>
+</body>
+
+</html>

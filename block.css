@@ -1,0 +1,84 @@
+/* ===== Tema (claro/escuro automático) ===== */
+:root {
+    --bg: #ffffff;
+    --panel: #f0f0f0;
+    --text: #051638;
+    --muted: #6b7280;
+    --primary: #2563eb;
+    --primary-contrast: #ffffff;
+    --ring: #93c5fd;
+    --ok: #16a34a;
+    --warn: #f59e0b;
+    --bad: #ef4444;
+
+    --hist-allow-bg: rgba(14, 95, 44, 0.219);
+    --hist-allow-border: #15803d;
+
+    --hist-block-bg: rgba(95, 43, 43, 0.247);
+    --hist-block-border: #b91c1c;
+
+    --hist-susp-bg: rgba(177, 143, 64, 0.247);
+    --hist-susp-border: #cca054;
+
+    --hairline: #b3b4b8;
+    --shadow: 0 1px 5px rgba(0, 0, 0, .45);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #1d1d1d;
+        /* fundo da página */
+        --panel: #242424;
+        /* cartões */
+        --text: #e5e7eb;
+        /* texto principal */
+        --muted: #9ca3af;
+        /* texto secundário */
+        --primary: #60a5fa;
+        --primary-contrast: #1d1d1d;
+        --ring: #3b82f6;
+        --ok: #22c55e;
+        --warn: #fbbf24;
+        --bad: #ca4c4c;
+
+        --hist-allow-bg: rgba(22, 163, 74, .06);
+        --hist-allow-border: #15803d;
+
+        --hist-block-bg: rgba(248, 113, 113, .08);
+        --hist-block-border: #b91c1c;
+
+        --hist-susp-bg: rgba(251, 191, 36, .10);
+        --hist-susp-border: #955f00;
+
+        --hairline: #32363a;
+        --shadow: 0 1px 5px rgba(0, 0, 0, .45);
+    }
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: grid;
+    place-items: center;
+    background: var(--bg);
+    color: var(--muted);
+    font-family: "Lexend";
+}
+
+.box {
+    background: var(--panel);
+    padding: 24px;
+    border-radius: 12px;
+    width: min(520px, 94vw);
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+h1 {
+    margin-top: 0;
+    color: var(--text);
+}

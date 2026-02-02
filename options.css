@@ -1,0 +1,1322 @@
+/* ===== Tema (claro/escuro automático) ===== */
+:root {
+    --bg: #ffffff;
+    --panel: #f0f0f0;
+    --text: #051638;
+    --muted: #6b7280;
+    --primary: #2563eb;
+    --primary-contrast: #ffffff;
+    --ring: #93c5fd;
+    --ok: #16a34a;
+    --warn: #f59e0b;
+    --bad: #ef4444;
+
+    --hist-allow-bg: rgba(14, 95, 44, 0);
+    --hist-allow-border: #15803d;
+
+    --hist-block-bg: rgba(95, 43, 43, 0);
+    --hist-block-border: #b91c1c;
+
+    --hist-susp-bg: rgba(177, 143, 64, 0);
+    --hist-susp-border: #cca054;
+
+    --hairline: #b3b4b8;
+    --shadow: 0 1px 5px rgba(0, 0, 0, .45);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #1d1d1d;
+        /* fundo da página */
+        --panel: #242424;
+        /* cartões */
+        --text: #e5e7eb;
+        /* texto principal */
+        --muted: #9ca3af;
+        /* texto secundário */
+        --primary: #60a5fa;
+        --primary-contrast: #1d1d1d;
+        --ring: #3b82f6;
+        --ok: #22c55e;
+        --warn: #fbbf24;
+        --bad: #ca4c4c;
+
+        --hist-allow-bg: rgba(22, 163, 74, .06);
+        --hist-allow-border: #15803d;
+
+        --hist-block-bg: rgba(248, 113, 113, .08);
+        --hist-block-border: #b91c1c;
+
+        --hist-susp-bg: rgba(251, 191, 36, .10);
+        --hist-susp-border: #955f00;
+
+        --hairline: #32363a;
+        --shadow: 0 1px 5px rgba(0, 0, 0, .45);
+    }
+}
+
+html,
+body {
+    color-scheme: light dark
+}
+
+/* ===== Base ===== */
+* {
+    box-sizing: border-box
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px
+}
+
+/* títulos */
+h1 {
+    margin: 0 0 16px;
+    text-align: center;
+    font-family: "Lexend";
+}
+
+h2 {
+    margin: 0 0 12px;
+    font-family: "Lexend";
+}
+
+h3 {
+    margin: 12px 0 8px
+}
+
+
+/* util */
+.hidden {
+    display: none;
+}
+
+.muted {
+    color: var(--muted);
+    font-size: 12px;
+    font-family: "Lexend";
+}
+
+.label {
+    font-size: 0.8rem;
+    color: var(--text);
+    font-family: "Lexend";
+    font-weight: 500;
+}
+
+/* centraliza e limita a largura */
+.card-status.centered {
+    width: 100%;
+    max-width: 50%;
+    /* ajuste fino: 360–520px */
+    margin: 0 auto 16px;
+    /* centralizado + espaçamento abaixo */
+}
+
+/* versão compacta (menos respiro, tipografia menor) */
+.card-status.compact {
+    padding: 12px 16px;
+}
+
+.card-status.compact .title-row h2 {
+    font-size: 18px;
+    font-family: "Lexend";
+}
+
+.card-status.compact #status-hint {
+    font-size: 12px;
+    opacity: .8;
+    margin-top: 6px;
+    font-family: "Lexend";
+}
+
+.card-status.compact .field {
+    grid-template-columns: 1fr;
+    gap: 6px;
+}
+
+.card-status.compact select {
+    width: 100%;
+    border: 1px solid var(--hairline);
+    background: var(--panel);
+    color: var(--text);
+    font-family: "Lexend";
+    border-radius: 12px;
+    padding: 8px 10px;
+    outline: none;
+    font-weight: 500;
+}
+
+.card-status.compact .switch {
+    transform: scale(.92);
+    transform-origin: right center;
+}
+
+
+/* ===== STATUS (estilo popup) ===== */
+.card-status {
+    padding-top: 14px;
+}
+
+.card-status .title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-family: "Lexend";
+}
+
+.card-status .title-row h2 {
+    margin: 0;
+    font-family: "Lexend";
+}
+
+.title-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* pílula já existe .pill/.ok/.bad – só garantimos contraste */
+.card-status .pill {
+    font-size: 12px;
+    font-weight: 700;
+    font-family: "Lexend";
+}
+
+.card-status.is-on .pill {
+    background: rgba(22, 163, 74, .12);
+    color: #15803d;
+}
+
+.card-status:not(.is-on) .pill {
+    background: rgba(248, 113, 113, .15);
+    color: #b91c1c;
+}
+
+/* linha auxiliar sob o título */
+#status-hint {
+    margin: 8px 0 10px;
+    font-family: "Lexend";
+    color: var(--muted);
+}
+
+/* campo alinhado */
+.field {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 10px;
+    align-items: center;
+    margin-top: 6px;
+}
+
+@media (max-width: 640px) {
+    .field {
+        grid-template-columns: 1fr;
+    }
+
+    .field .label {
+        margin-bottom: 4px;
+    }
+}
+
+/* ===== switch ===== */
+/* ===== Switch (Options) — versão padronizada ===== */
+.switch {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+}
+
+/* Ocultar input */
+.switch input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Trilha (track) */
+.switch .slider {
+    width: 46px;
+    height: 26px;
+    border-radius: 999px;
+    background: #c7cad1;
+    /* cor OFF */
+    position: relative;
+    transition: background .18s ease;
+}
+
+/* Bolinha */
+.switch .slider::after {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform .18s ease, background .18s ease;
+}
+
+/* Estado ON */
+.switch input:checked+.slider {
+    background: var(--primary);
+}
+
+.switch input:checked+.slider::after {
+    transform: translateX(20px);
+}
+
+/* Foco (acessibilidade) */
+.switch input:focus-visible+.slider {
+    outline: 3px solid var(--ring);
+    outline-offset: 2px;
+}
+
+
+
+
+
+/* cartões */
+.card {
+    background: var(--panel);
+    border-radius: 14px;
+    padding: 16px;
+    margin: 14px 0;
+    box-shadow: var(--shadow);
+}
+
+/* Badge de estado no título (mostra só quando está em uso) */
+.mode-badge {
+    margin-left: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 9999px;
+    padding: 2px 10px;
+    background: rgba(22, 163, 74, .14);
+    /* verde claro */
+    color: #15803d;
+    vertical-align: middle;
+}
+
+.mode-badge.hidden {
+    display: none;
+}
+
+
+
+
+/* ===== Foco do “apagar” agora é só o corpo do acordeão ===== */
+
+
+
+/* .collapse-body.is-dim {
+    opacity: .6;
+    filter: saturate(.8);
+    transition: opacity .18s ease, filter .18s ease;
+}
+
+.collapse-body.is-dim:hover {
+    opacity: .85;
+    filter: saturate(.95);
+} */
+
+/* garante que o cabeçalho sempre seja clicável */
+.collapse-toggle {
+    pointer-events: auto;
+    position: relative;
+    z-index: 1;
+}
+
+
+
+/* grids */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px
+}
+
+@media (max-width:900px) {
+    .grid {
+        grid-template-columns: 1fr
+    }
+}
+
+/* linhas */
+.row {
+    display: flex;
+    gap: 5%;
+    align-items: center;
+    flex-wrap: wrap
+}
+
+/* inputs/selects */
+input,
+select {
+    padding: 10px 12px;
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    background: var(--panel);
+    color: inherit;
+    outline: none;
+    font-family: 'Lexend';
+}
+
+input:focus,
+select:focus {
+    box-shadow: 0 0 0 3px var(--ring);
+    border-color: transparent
+}
+
+#block-input {
+    margin-bottom: 10px;
+    width: 70%;
+    height: 42px;
+}
+
+#block-add {
+    width: 25%;
+    margin-bottom: 10px;
+
+}
+
+#allow-input {
+    margin-bottom: 10px;
+    width: 70%;
+    height: 42px;
+}
+
+#allow-add {
+    width: 25%;
+    margin-bottom: 10px;
+
+}
+
+#sch-allow-input {
+    margin-bottom: 10px;
+    width: 70%;
+    height: 42px;
+}
+
+#sch-allow-add {
+    width: 25%;
+    margin-bottom: 10px;
+}
+
+#login-input {
+    margin-bottom: 10px;
+    width: 70%;
+    height: 42px;
+}
+
+#btn-login {
+    width: 25%;
+    margin-bottom: 10px;
+}
+
+#new-pass {
+    margin-bottom: 10px;
+    width: 47.5%;
+    height: 42px;
+}
+
+#new-pass2 {
+    margin-bottom: 10px;
+    width: 47.5%;
+    height: 42px;
+}
+
+#btn-set-pass {
+    width: 100%;
+    margin-bottom: 10px;
+    margin: auto;
+    align-items: center;
+}
+
+
+
+/* botões */
+button,
+.btn {
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--primary);
+    color: var(--primary-contrast);
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter .15s ease, transform .05s ease;
+    font-family: 'Lexend';
+}
+
+button:hover {
+    filter: brightness(1.05)
+}
+
+button:active {
+    transform: translateY(1px)
+}
+
+.btn-remover {
+    background: var(--panel);
+    color: var(--bad);
+    /* border: solid var(--hairline) 1px; */
+    padding: 8px 12px;
+}
+
+.btn-remover:hover {
+    background: var(--bad);
+    color: var(--primary-contrast);
+    /* border: solid var(--primary-contrast) 1px; */
+    padding: 8px 12px;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--hairline);
+}
+
+/* listas simples */
+ul {
+    list-style: none;
+    margin: 10px 0 0;
+    padding: 0
+}
+
+li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 4px 8px;
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    background: var(--panel);
+    backdrop-filter: saturate(120%);
+    margin-bottom: 8px;
+    font-family: 'Lexend';
+}
+
+/* badge */
+.badge {
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, .06);
+}
+
+/* ===== Histórico ===== */
+#hist-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed
+}
+
+#hist-table th,
+#hist-table td {
+    padding: 8px 10px;
+    vertical-align: top;
+    text-align: center;
+    vertical-align: middle;
+    border-top: solid var(--hairline) 1px;
+}
+
+#hist-table thead th {
+    border-top: 0;
+    color: var(--text);
+    font-weight: 700;
+    font-family: "Lexend";
+}
+
+#hist-table th:nth-child(1),
+#hist-table td:nth-child(1) {
+    width: 180px;
+    white-space: nowrap;
+    font-family: "Lexend";
+}
+
+#hist-table th:nth-child(2),
+#hist-table td:nth-child(2) {
+    width: 120px;
+    white-space: nowrap;
+    font-family: "Lexend";
+}
+
+#hist-table th:nth-child(3),
+#hist-table td:nth-child(3) {
+    width: auto;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    font-family: "Lexend";
+}
+
+.pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 1.2
+}
+
+.pill.ok {
+    background: rgba(22, 163, 74, .12);
+    color: #15803d
+}
+
+.pill.bad {
+    background: rgba(248, 113, 113, .15);
+    color: #b91c1c;
+}
+
+.pill.warn {
+    background: rgba(251, 191, 36, .18);
+    color: #955f00
+}
+
+/* linhas coloridas suaves */
+.hist-allow {
+    background: var(--hist-allow-bg);
+    border-left: 4px solid var(--hist-allow-border);
+}
+
+.hist-block {
+    background: var(--hist-block-bg);
+    border-left: 4px solid var(--hist-block-border)
+}
+
+.hist-susp {
+    background: var(--hist-susp-bg);
+    border-left: 4px solid var(--hist-susp-border)
+}
+
+.hist-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.hist-filters input,
+.hist-filters select {
+    background: var(--bg-secondary);
+    border: 1px solid var(--hairline);
+    color: var(--fg);
+    /* padding: 6px 10px;
+    border-radius: 6px; */
+    font-size: 14px;
+    outline: none;
+}
+
+.hist-filters input:focus,
+.hist-filters select:focus {
+    border-color: var(--accent);
+}
+
+/* ----- Motivo (linha expandida) ----- */
+.hist-reason-row td {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.4;
+    padding: 8px 12px;
+    transition: all 0.25s ease;
+}
+
+.hist-reason-row {
+    animation: fadeInReason 0.25s ease forwards;
+}
+
+@keyframes fadeInReason {
+    from {
+        opacity: 0;
+        transform: translateY(-3px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== animação de expansão e seta ===== */
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.pill::after {
+    content: '▾';
+    /* setinha para baixo */
+    font-size: 11px;
+    transition: transform 0.25s ease;
+}
+
+.pill.open::after {
+    transform: rotate(-180deg);
+    /* gira para cima */
+}
+
+/* linha de descrição */
+.hist-reason-row td {
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 13px;
+    color: var(--muted);
+    padding: 6px 12px;
+    transition: all 0.3s ease;
+}
+
+.hist-reason-row td strong {
+    color: var(--muted);
+}
+
+/* transição suave da linha de motivo */
+.hist-reason-row {
+    opacity: 0;
+    transform: translateY(-5px);
+    animation: fadeInRow 0.25s ease forwards;
+}
+
+@keyframes fadeInRow {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+/* ===== Acordeão ===== */
+.accordion {
+    margin-top: 16px;
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    background: linear-gradient(180deg, var(--panel), transparent 60%);
+    box-shadow: var(--shadow);
+    padding: 0;
+}
+
+.accordion>summary {
+    list-style: none;
+    user-select: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.accordion>summary::-webkit-details-marker {
+    display: none;
+}
+
+.accordion .chev {
+    transition: transform .18s ease;
+    color: var(--muted);
+}
+
+.accordion[open]>summary .chev {
+    transform: rotate(180deg);
+}
+
+.accordion>*:not(summary) {
+    padding: 0 16px 16px;
+}
+
+/* ===== Dim quando desabilitado ===== */
+/* .dimmable.dim {
+    opacity: .55;
+    filter: grayscale(.1);
+}
+
+.dimmable.dim :is(input, select, button, textarea) {
+    pointer-events: none;
+}
+
+.dimmable.dim :is(input, select, textarea) {
+    background: rgba(127, 127, 127, .15);
+} */
+
+/* pequeno espaço entre cards dentro do acordeão */
+.accordion .card {
+    margin: 12px 0 0;
+}
+
+
+/* quando o corpo estiver fechado, some DE VERDADE */
+/* .collapse-body[hidden] {
+    display: none !important;
+} */
+
+.collapse-inner {
+    min-height: 0;
+}
+
+
+/* ===== Modal ===== */
+.modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, .45);
+    z-index: 9999;
+    padding: 16px;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-card {
+    width: min(900px, 92vw);
+    max-height: 86vh;
+    overflow: hidden;
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, .4);
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--hairline);
+}
+
+.modal-head h3 {
+    margin: 0;
+    font-size: 18px;
+    font-family: "Lexend";
+}
+
+.icon-btn {
+    border: 0;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--text);
+    opacity: .8;
+}
+
+.icon-btn:hover {
+    opacity: 1;
+}
+
+.modal-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--hairline);
+}
+
+.modal-tools input {
+    flex: 1;
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+}
+
+.modal-body {
+    overflow: auto;
+    padding: 8px 14px;
+}
+
+.modal-foot {
+    padding: 10px 14px;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.modal-foot button {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 0;
+    background: var(--primary);
+    color: var(--primary-contrast);
+}
+
+/* linhas de domínio */
+.cat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--hairline);
+}
+
+.cat-row .d {
+    font-family: "Lexend";
+}
+
+/* botões “tag” de ação */
+.tag {
+    border: 0;
+    border-radius: 9999px;
+    padding: 4px 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* “Permitido” */
+.tag.allow {
+    background: rgba(22, 163, 74, .12);
+    color: #16a34a;
+}
+
+/* “Bloquear” */
+.tag.block {
+    background: rgba(239, 68, 68, .15);
+    color: #ef4444;
+}
+
+/* ======= modal fim ========== */
+
+/* botão "Ver" no card */
+.btn-view {
+    margin-left: 8px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    color: var(--primary);
+    border: 1px solid var(--hairline);
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.7rem;
+}
+
+.btn-view:hover {
+    text-decoration: underline;
+}
+
+.card-checkbox .row {
+    font-family: "Lexend";
+    margin-top: 5px;
+}
+
+/* Linha de categoria */
+.ck {
+    display: grid;
+    grid-template-columns: 28px 1fr auto auto;
+    min-height: 44px;
+    gap: 12px;
+    align-items: center;
+    padding: 8px 10px;
+    border-radius: 10px;
+    transition: background .15s ease, opacity .15s ease;
+}
+
+/* Efeito hover sutil */
+.ck:hover {
+    background: color-mix(in oklab, var(--panel) 90%, var(--text) 10% / 6%);
+}
+
+/* Esconde o input nativo mas mantém acessível */
+.ck>input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Caixinha visual da checkbox */
+.ck .ck-box {
+    position: relative;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--hairline);
+    border-radius: 7px;
+    display: grid;
+    place-content: center;
+    background: var(--panel);
+    line-height: 1;
+}
+
+/* Marca de check */
+.ck .ck-box::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 6px;
+    border: 2px solid #fff;
+    border-top: 0;
+    border-right: 0;
+    transform: translate(-50%, -58%) rotate(-45deg);
+    opacity: 0;
+}
+
+/* Estado marcado */
+.ck>input:checked+.ck-box {
+    background: var(--primary);
+    border-color: transparent;
+}
+
+/* “tick” branco quando checado */
+.ck>input:checked+.ck-box::after {
+    border-color: #fff;
+    border-top: 0;
+    border-right: 0;
+    margin-top: -1px;
+    opacity: 1;
+}
+
+/* Texto da categoria */
+.ck .ck-label {
+    font-weight: 600;
+    font-family: "Lexend";
+    font-size: 0.8rem;
+}
+
+/* Contador de domínios */
+.ck .ck-count {
+    font-family: "Lexend";
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+/* Botão “Ver” */
+.ck .ck-view {
+    font-family: "Lexend";
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--hairline);
+    background: transparent;
+    color: var(--primary);
+    font-weight: 600;
+
+}
+
+.ck .ck-view:hover {
+    text-decoration: underline;
+}
+
+/* Cabeçalho clicável com setinha */
+.collapsible {
+    margin: 0 0 10px;
+}
+
+.collapse-toggle {
+    all: unset;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    padding-right: 4px;
+}
+
+.collapse-toggle:focus-visible {
+    outline: 3px solid color-mix(in oklab, var(--ring) 70%, transparent);
+    outline-offset: 3px;
+    border-radius: 10px;
+}
+
+/* (setinha) */
+.collapse-toggle .chev {
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid var(--muted);
+    border-bottom: 2px solid var(--muted);
+    transform: rotate(45deg);
+    transition: transform .18s ease, border-color .18s ease;
+}
+
+.collapse-toggle[aria-expanded="true"] .chev {
+    transform: rotate(-135deg);
+    /* vira para cima quando aberto */
+    border-color: var(--text);
+}
+
+/* Corpo com transição suave */
+.collapse-body {
+    overflow: hidden;
+    transition: grid-template-rows .22s ease, opacity .22s ease;
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+}
+
+.collapse-body>* {
+    min-height: 0;
+}
+
+.collapse-body[data-open="true"] {
+    grid-template-rows: 1fr;
+    /* expande */
+    opacity: 1;
+}
+
+
+/* layout: title + badge */
+.collapse-toggle {
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.collapse-toggle .chev {
+    margin-left: auto;
+}
+
+.mode-badge {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 2px 10px;
+    margin-left: 10px;
+}
+
+/* modo estudo */
+
+#wk,
+.wk-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(90px, 1fr));
+    margin: 8px 0 4px;
+}
+
+.ck.wk {
+    grid-template-columns: 22px 1fr;
+    min-height: 36px;
+    padding: 6px 8px;
+}
+
+/* badge alinhado ao título */
+#card-study {
+    margin-bottom: 28px;
+}
+
+#card-study .collapse-toggle {
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+#card-study .collapse-toggle .chev {
+    margin-left: auto;
+}
+
+/* quando o card estiver desabilitado, dim automático */
+/* #card-study.dimmable.dim {
+    opacity: .55;
+    filter: grayscale(.1);
+} */
+
+/* garante Lexend em labels menores do estudo */
+#card-study .label,
+#card-study .ck-label,
+#card-study h3 {
+    font-family: "Lexend";
+}
+
+/* ===== Modo Estudo: layout e alinhamento ===== */
+#card-study .row-time {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+}
+
+#card-study input[type="time"] {
+    text-align: center;
+    width: 96px;
+    min-width: 96px;
+}
+
+#card-study .sch-days {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    /* mais juntinhos */
+    margin: 6px 0 2px;
+}
+
+.list-study {
+    width: 70%;
+    align-items: center;
+    margin: auto;
+}
+
+#card-study .study-hint {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* ===== Melhorias visuais no Modo Estudo ===== */
+
+#card-study .ck {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px auto 14px;
+    justify-content: center;
+}
+
+#card-study .ck-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* Centraliza e destaca o bloco de horários */
+#card-study .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 8px 0 12px;
+}
+
+/* Centraliza as labels “Início” e “Fim” */
+#card-study .label {
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    color: var(--text);
+}
+
+/* Campos de hora: centralizados */
+#card-study input[type="time"] {
+    text-align: center;
+    font-size: 15px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--hairline);
+    background: var(--surface-2);
+    color: var(--text);
+    transition: border 0.2s, background 0.2s;
+}
+
+#card-study input[type="time"]:focus {
+    border-color: var(--accent);
+    background: var(--surface-1);
+}
+
+/* Centraliza e dá espaçamento uniforme na grade dos dias */
+#card-study .wk-grid {
+    justify-items: center;
+    text-align: center;
+    margin: 10px auto 0;
+}
+
+/* Centraliza o título e o botão “Adicionar” dentro da área de sites permitidos */
+#card-study .list-study {
+    width: 70%;
+    margin: 20px auto 0;
+}
+
+/* remove qualquer seta herdada no bloco do switch principal */
+#status-pill::after,
+.title-row .chev,
+.title-actions .chev {
+    display: none !important;
+}
+
+/* lazzy load */
+#history-container {
+    max-height: 420px;
+    /* controla o tamanho visível */
+    overflow-y: auto;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid var(--hairline);
+}
+
+/* scrollbar dark */
+#history-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#history-container::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 8px;
+}
+
+#history-container::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+/* ------------ historico end  -------------------- */
+.space-end {
+    margin-bottom: 800px;
+}
+
+/* ====== Estado de carregamento clean ====== */
+#history-container.loading {
+    position: relative;
+    opacity: 0.5;
+    transition: opacity 0.25s ease;
+}
+
+#history-container::after {
+    content: "• • •";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.4rem;
+    letter-spacing: 3px;
+    color: #777;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+    animation: none;
+}
+
+#history-container.loading::after {
+    opacity: 1;
+    animation: dotsPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes dotsPulse {
+
+    0%,
+    80%,
+    100% {
+        opacity: 0.3;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+
+    40% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+}
+
